@@ -1,15 +1,17 @@
 class DynamicArray {
     int[] array;
     int capacity;
-
+    int length;
 
     public DynamicArray(int capacity) {
         this.capacity = capacity;
         this.array = new int[capacity];
+        this.length = 0;
     }
 
     public int get(int i) {
         return this.array[i];
+
     }
 
     public void set(int i, int n) {
@@ -17,30 +19,33 @@ class DynamicArray {
     }
 
     public void pushback(int n) {
-        //end = capacity -1
-        this.array[capacity -1] = n;
+        if(this.length == this.capacity) {
+            resize();
+        }
+        this.array[this.length] = n;
+        this.length++;
     }
 
     public int popback() {
-        int x = this.array[capacity-1];
-        this.array[capacity-1] = 0;
+        int x = this.array[length-1];
+        this.length--;
         return x;
     }
 
     private void resize() {
-        
+        this.capacity = capacity * 2;
+        int[] newArray = new int[this.capacity];
+        for(int i = 0; i < array.length; i++) {
+            newArray[i] = this.array[i];
+        }
+        this.array = newArray;
     }
 
     public int getSize() {
-        for(int i = 0; i < this.capacity; i++) {
-            int elements = 0;
-            if(this.array[i] != 0) {
-
-            }
-        }
+        return this.length;
     }
 
     public int getCapacity() {
-
+        return this.capacity;
     }
 }
