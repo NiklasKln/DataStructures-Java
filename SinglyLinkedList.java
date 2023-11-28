@@ -11,27 +11,39 @@ class LinkedList {
             this.data = data;
             this.next = null;
         }
+
+        Node(int data, Node next) {
+            this.data = data;
+            this.next = next;
+        }
     }
 
     public LinkedList() {
-        this.head = new Node(0);
+        this.head = new Node(-1);
+        this.tail = this.head;
+
     }
 
     public int get(int index) {
-        Node current = head;
-        for(int i = 0; i <= index; i++) {
-            Node current = current.next;
-            if(current.next == null) {
-                return -1;
+        Node current = head.next;
+        int counter = 0;
+        while( current != null) {
+            if(counter == index) {
+                return current.data;
             }
+        counter++;
+        current = current.next;
         }
-        return current.data;
+        return -1;
     }
 
     public void insertHead(int val) {
-        Node currentHead = this.head;
-        this.head = new Node(val);
-        head.next = currentHead;
+        Node newNode = new Node(val);
+        newNode.next = this.head.next;
+        this.head.next = newNode;
+        if(newNode.next == null) {
+            this.tail = newNode;
+        }
     }
 
     public void insertTail(int val) {
@@ -40,32 +52,35 @@ class LinkedList {
         currentTail.next = this.tail;
     }
 
+   
+    // Method to remove at given index
     public boolean remove(int index) {
-        Node current = head;
-        //for loop stops one node before the searched one
-        for(int i = 0; i < index; i++) {
-            Node current = current.next;
-            if(current.next == null) {
-                return false;
-            } 
+      //Schritt 1. iteriere eins davor
+      int counter = 0;
+      Node current = this.head;
+      while(counter < index && current != null) {
+        counter++;
+        current = current.next;
+      }
+      if(current != null && current.next != null) {
+        if(current.next == this.tail) {
+            this.tail = current;
         }
-        Node prev = current;
-        Node searched = current.next;
-        Node behind = current.next.next;
-        prev.next = behind; //so searched in the middle is deleted
+        current.next = current.next.next;
         return true;
+      }
+      return false;
     }
 
+     
+
     public ArrayList<Integer> getValues() {
-        ArrayList<Integer> arr = new ArrayList<Integer>();
-         Node current = head;
-        for(int i = 0; i <= index; i++) {
-            Node current = current.next;
+        ArrayList<Integer> arr = new ArrayList();
+        Node current = this.head.next;
+        while(current != null) {
             arr.add(current.data);
-            if(current.equals(tail)) {
-                break;
-            }
+            current = current.next;
         }
-    return arr;
+        return arr;
     }
 }
